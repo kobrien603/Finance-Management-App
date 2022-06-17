@@ -1,0 +1,38 @@
+﻿@page "/stocks"
+@using FinanceManagementApp.Services
+@implements IDisposable
+
+<h3>Stocks</h3>
+
+@if (StockService.Stocks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @*foreach (var stock in StockService.Stocks.Values)
+    {
+        <p>@stock.Symbol</p>
+        <p>@stock.RegularMarketChange</p>
+        <p>@stock.RegularMarketPrice</p>
+        <p>@stock.RegularMarketTime</p>
+        <p>@(DateTimeOffset.FromUnixTimeSeconds(stock.RegularMarketTime).ToLocalTime().DateTime)</p>
+    }*@
+}
+
+
+@code {
+    [Inject]
+    public StockService StockService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        StockService.OnChange += StateHasChanged;
+        StockService.Init();
+    }
+
+    public void Dispose()
+    {
+        StockService.OnChange -= StateHasChanged;
+    }
+}
