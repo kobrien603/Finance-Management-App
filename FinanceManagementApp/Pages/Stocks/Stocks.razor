@@ -20,15 +20,25 @@ else
     }*@
 }
 
+<canvas id="myChart"></canvas>
 
 @code {
     [Inject]
     public StockService StockService { get; set; }
 
+    [Inject]
+    public IJSRuntime JSRunTime { get; set; }
+
     protected override void OnInitialized()
     {
         StockService.OnChange += StateHasChanged;
         StockService.Init();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        JSRunTime.InvokeVoidAsync("buildChart");
+        return base.OnAfterRenderAsync(firstRender);
     }
 
     public void Dispose()

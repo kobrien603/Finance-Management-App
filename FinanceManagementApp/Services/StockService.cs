@@ -1,6 +1,5 @@
 ﻿using FinanceManagementApp.StockAPI;
-using FinanceManagementApp.StockAPI.Models;
-using YahooFinanceApi;
+using YahooQuotesApi;
 
 namespace FinanceManagementApp.Services
 {
@@ -20,8 +19,8 @@ namespace FinanceManagementApp.Services
         #endregion
 
         #region properties
-        private List<IReadOnlyList<Candle>> stocks;
-        public List<IReadOnlyList<Candle>> Stocks
+        private Security stocks;
+        public Security Stocks
         {
             get => stocks;
             set

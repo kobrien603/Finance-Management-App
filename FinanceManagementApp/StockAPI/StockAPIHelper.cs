@@ -1,11 +1,22 @@
 ﻿using FinanceManagementApp.StockAPI.Models;
+using NodaTime;
 using System.Diagnostics;
-using YahooFinanceApi;
+using YahooQuotesApi;
 
 namespace FinanceManagementApp.StockAPI
 {
     public class StockAPIHelper
     {
+        YahooQuotes yahooAPI;
+
+        public StockAPIHelper(DateTime? startDate = null)
+        {
+            var date = startDate ?? new DateTime(2020, 1, 1);
+            yahooAPI = new YahooQuotesBuilder()
+                .WithHistoryStartDate(Instant.FromUtc(date.Year, date.Month, date.Day, date.Hour, date.Minute))
+                .Build();
+        }
+
         /// <summary>
         /// array of all stocks we want to monitor
         /// TODO - make list dynamic (user selects and saves?)
@@ -20,23 +31,12 @@ namespace FinanceManagementApp.StockAPI
         /// initial call to fetch historical data for all stocks
         /// </summary>
         /// <returns></returns>
-        public async Task<List<IReadOnlyList<Candle>>> FetchAllStockInfo()
+        public async Task<Security> FetchAllStockInfo()
         {
-            List<IReadOnlyList<Candle>> historical_data = new();
-            try
-            {
-                foreach (var stock in _stocks)
-                {
-                    //var t = await Yahoo.GetHistoricalAsync(stock, new DateTime(2022, 01, 01), new DateTime(2022, 12, 01), Period.Daily);
-                    //var x = await Yahoo.GetDividendsAsync(stock, new DateTime(2022, 01, 01), new DateTime(2022, 12, 01));
-                    string s = "";
-                    //historical_data.Add();
-                }
-            }
-            catch (Exception e)
-            {
-                string t = "";
-            }
+            
+                Security historical_data = await yahooAPI.GetAsync("MSFT", HistoryFlags.PriceHistory)
+                    ?? throw new ArgumentException("Unknown symbol.");
+            
 
             return historical_data;
         }
@@ -45,9 +45,9 @@ namespace FinanceManagementApp.StockAPI
         /// fetch latest data for all stocks
         /// </summary>
         /// <returns></returns>
-        public async Task<IReadOnlyDictionary<string, Security>> FetchLatestData()
+        public async Task<Dictionary<string, Security?>> FetchLatestData()
         {
-            var stock_response = await Yahoo.Symbols(_stocks).QueryAsync();
+            var stock_response = await yahooAPI.GetAsync(_stocks);
             return stock_response;
         }
     }

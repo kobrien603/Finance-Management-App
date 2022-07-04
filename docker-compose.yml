@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  financemanagementapp:
+    image: ${DOCKER_REGISTRY-}financemanagementapp
+    build:
+      context: .
+      dockerfile: FinanceManagementApp/Dockerfile
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_DATABASE=financemanagement
+      - MYSQL_ROOT_PASSWORD=test123
+    ports:
+      - '3306:3306'
