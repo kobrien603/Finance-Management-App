@@ -1,0 +1,40 @@
+﻿@page "/stocks"
+@using FinanceManagementApp.Services
+@implements IDisposable
+
+<h3>Stocks</h3>
+
+@if (StockService.Stocks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    foreach (var stock in StockService.Stocks.Values)
+    {
+        if (stock != null)
+        {
+            @*<div class="row">
+                <div class="col pb-3">*@
+                    <Stock StockData="stock" />
+                @*</div>
+            </div>*@
+        }
+    }
+}
+
+@code {
+    [Inject]
+    public StockService StockService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        StockService.OnChange += StateHasChanged;
+        StockService.Init();
+    }
+
+    public void Dispose()
+    {
+        StockService.OnChange -= StateHasChanged;
+    }
+}

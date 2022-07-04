@@ -4,7 +4,11 @@
   "libraries": [
     {
       "library": "Chart.js@3.8.0",
-      "destination": "wwwroot/js/Chart.js/"
+      "destination": "wwwroot/libs/Chart.js/"
+    },
+    {
+      "library": "chartjs-plugin-zoom@1.2.1",
+      "destination": "wwwroot/libs/chartjs-plugin-zoom/"
     }
   ]
 }

@@ -1,0 +1,38 @@
+﻿@using FinanceManagementApp.Models
+@using YahooQuotesApi
+
+<p>@StockData.Symbol</p>
+
+<canvas id="@(StockData.Symbol + "_chart")"></canvas>
+
+@code {
+    [Parameter]
+    public Security StockData { get; set; }
+
+    [Inject]
+    public IJSRuntime JSRunTime { get; set; }
+
+    private List<DatasetModel> Datasets = new();
+
+    protected override void OnInitialized()
+    {
+        Datasets.Add(new DatasetModel()
+        {
+            Label = StockData.Symbol.Name,
+            YAxisID = "y",
+            Data = StockData.PriceHistory.Value.Select(p => p.Close).ToList()
+        });
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        JSRunTime.InvokeVoidAsync(
+            "buildChart",
+            StockData.Symbol + "_chart",
+            StockData.DisplayName,
+            Datasets,
+            StockData.PriceHistory.Value.Select(p => p.Date.ToDateOnly().ToString("MMM-dd-yyyy")).ToList()
+        );
+        return base.OnAfterRenderAsync(firstRender);
+    }
+}

@@ -19,8 +19,8 @@ namespace FinanceManagementApp.Services
         #endregion
 
         #region properties
-        private Security stocks;
-        public Security Stocks
+        private Dictionary<string, Security?> stocks;
+        public Dictionary<string, Security?> Stocks
         {
             get => stocks;
             set
@@ -45,13 +45,7 @@ namespace FinanceManagementApp.Services
         #region functions
         public async void FetchStocks()
         {
-            FetchLatestData();
-            Stocks = await new StockAPIHelper().FetchAllStockInfo();
-        }
-
-        public async void FetchLatestData()
-        {
-            var updated_data = await new StockAPIHelper().FetchLatestData();
+            Stocks = await new StockAPIHelper().FetchDataAsync();
         }
         #endregion
     }
