@@ -1,9 +1,12 @@
 ﻿@using FinanceManagementApp.Models
 @using YahooQuotesApi
 
+
 <p>@StockData.Symbol</p>
 
-<canvas id="@(StockData.Symbol + "_chart")"></canvas>
+<div style="width:1000px; height: 500px;">
+    <canvas id="@(StockData.Symbol + "_chart")"></canvas>
+</div>
 
 @code {
     [Parameter]

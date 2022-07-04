@@ -10,17 +10,17 @@
 }
 else
 {
-    foreach (var stock in StockService.Stocks.Values)
-    {
-        if (stock != null)
+    <div class="row">
+        @foreach (var stock in StockService.Stocks.Values)
         {
-            @*<div class="row">
-                <div class="col pb-3">*@
+            if (stock != null)
+            {
+                <div class="col-auto">
                     <Stock StockData="stock" />
-                @*</div>
-            </div>*@
+                </div>
+            }
         }
-    }
+    </div>
 }
 
 @code {

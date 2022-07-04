@@ -9,11 +9,12 @@ namespace FinanceManagementApp.StockAPI
     {
         private readonly YahooQuotes yahooAPI;
 
-        public StockAPIHelper(DateTime? startDate = null)
+        public StockAPIHelper(DateTime? startDate = null, Frequency frequency = Frequency.Monthly)
         {
             var date = startDate ?? new DateTime(2020, 1, 1);
             yahooAPI = new YahooQuotesBuilder()
                 .WithHistoryStartDate(Instant.FromUtc(date.Year, date.Month, date.Day, date.Hour, date.Minute))
+                .WithPriceHistoryFrequency(frequency)
                 .Build();
         }
 

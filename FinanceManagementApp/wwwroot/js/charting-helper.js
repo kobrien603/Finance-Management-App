@@ -10,11 +10,11 @@ function buildChart(id = "", title = "", datasets = [], labels = []) {
         data: data,
         options: {
             responsive: true,
+            maintainAspectRatio: true,
             interaction: {
                 mode: 'index',
                 intersect: false,
             },
-            stacked: false,
             scales: {
                 y: {
                     type: 'linear',
